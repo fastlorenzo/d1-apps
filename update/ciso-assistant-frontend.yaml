@@ -1,0 +1,23 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: ciso-assistant-frontend
+spec:
+  image: "ghcr.io/intuitem/ciso-assistant-community/frontend"
+  interval: 10m
+  provider: generic
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: ciso-assistant-frontend
+spec:
+  imageRepositoryRef:
+    name: ciso-assistant-frontend
+  filterTags:
+    pattern: "^v(?P<version>.*)$"
+    extract: "$version"
+  policy:
+    semver:
+      range: ">=1.6.0 <1.7.0"
