@@ -1,0 +1,38 @@
+---
+fail_fast: false
+repos:
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - args:
+          - --config-file
+          - .yamllint.yaml
+        id: yamllint
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.5
+    hooks:
+      - id: remove-crlf
+      - id: remove-tabs
+  - repo: https://github.com/sirosen/texthooks
+    rev: 0.6.6
+    hooks:
+      - id: fix-smartquotes
+  - repo: https://github.com/k8s-at-home/sops-pre-commit
+    rev: v2.1.1
+    hooks:
+      - id: forbid-secrets
+  - repo: https://github.com/zricethezav/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+  # DISABLED as it doesn't support OCI repositories
+  # - repo: https://github.com/tarioch/flux-check-hook
+  #   rev: v0.3.0
+  #   hooks:
+  #     - id: check-flux-helm-values
