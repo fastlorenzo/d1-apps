@@ -6,3 +6,4 @@ patches:
   - path: backend-values.yaml
     target:
       kind: Deployment
+      name: ciso-assistant-backend
