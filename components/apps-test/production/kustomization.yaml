@@ -9,3 +9,7 @@ patches:
     target:
       kind: Deployment
       name: ciso-assistant-backend
+  - path: frontend-values.yaml
+    target:
+      kind: Deployment
+      name: ciso-assistant-frontend

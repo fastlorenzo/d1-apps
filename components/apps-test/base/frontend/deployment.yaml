@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/intuitem/ciso-assistant-community/frontend:v1.6.0 # {"$imagepolicy": "apps-update:ciso-assistant-frontend:image"}
+          image: ghcr.io/intuitem/ciso-assistant-community/frontend:v1.6.3 # {"$imagepolicy": "apps-update:ciso-assistant-frontend:image"}
           env:
             - name: PUBLIC_BACKEND_API_URL
               value: http://ciso-assistant-backend:8000/api

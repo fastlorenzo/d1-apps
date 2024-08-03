@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: ghcr.io/intuitem/ciso-assistant-community/backend:v1.6.0
+          image: ghcr.io/intuitem/ciso-assistant-community/backend:v1.6.3 # {"$imagepolicy": "apps-update:ciso-assistant-backend:image"}
           env:
             - name: ALLOWED_HOSTS
               value: ciso-assistant-backend
