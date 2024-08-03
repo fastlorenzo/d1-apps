@@ -99,4 +99,3 @@ The update policies are defined in the `./update` directory:
 When a new chart version is pushed to the container registry, and if it matches the semver policy,
 Flux will update the HelmRelease YAML definitions and will push the changes to the `main` branch.
 Then it will upgrade the Helm releases to the new version to the staging cluster.
-
