@@ -1,0 +1,29 @@
+---
+# Ingress resource for the CISO Assistant application
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # annotations:
+  #   cert-manager.io/cluster-issuer: letsencrypt-production
+  labels:
+    app.kubernetes.io/name: ciso-assistant
+    app.kubernetes.io/component: ingress
+    app.kubernetes.io/instance: test
+  name: ciso-assistant
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: &host ${APP_INSTANCE_NAME}.ca.${CLUSTER_DOMAIN}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ciso-assistant-frontend
+                port:
+                  number: 3000
+  # tls:
+  #   - hosts:
+  #       - *host
+  #     secretName: ciso-assistant-tls

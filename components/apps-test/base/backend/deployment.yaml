@@ -1,0 +1,78 @@
+---
+# Backend for the CISO Assistant application
+# Using deployment for the backend to match the following docker-compose
+# version: "3.9"
+# services:
+#   backend:
+#     container_name: backend
+#     image: ghcr.io/intuitem/ciso-assistant-community/backend:latest
+#     restart: always
+#     environment:
+#       - ALLOWED_HOSTS=backend
+#       - CISO_ASSISTANT_URL=https://localhost:8443
+#       - DJANGO_DEBUG=True
+#     volumes:
+#       - ./db:/code/db
+#   frontend:
+#     container_name: frontend
+#     environment:
+#       - PUBLIC_BACKEND_API_URL=http://backend:8000/api
+#       - PROTOCOL_HEADER=x-forwarded-proto
+#       - HOST_HEADER=x-forwarded-host
+#     image: ghcr.io/intuitem/ciso-assistant-community/frontend:latest
+#     depends_on:
+#       - backend
+#   caddy:
+#     container_name: caddy
+#     image: caddy:2.7.6
+#     restart: unless-stopped
+#     ports:
+#       - 8443:8443
+#     command:
+#       - caddy
+#       - reverse-proxy
+#       - --from
+#       - https://localhost:8443
+#       - --to
+#       - frontend:3000
+#     volumes:
+#       - ./db:/data
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ciso-assistant-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ciso-assistant
+      app.kubernetes.io/component: backend
+      app.kubernetes.io/instance: test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ciso-assistant
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/instance: test
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/intuitem/ciso-assistant-community/backend:latest
+          env:
+            - name: ALLOWED_HOSTS
+              value: ciso-assistant-backend
+            - name: CISO_ASSISTANT_URL
+              value: https://${APP_INSTANCE_NAME}.ca.${CLUSTER_DOMAIN}
+            - name: DJANGO_DEBUG
+              value: "True"
+          # get multiple env variables from a secret
+          envFrom:
+            - secretRef:
+                name: ciso-assistant-secret
+          volumeMounts:
+            - name: db
+              mountPath: /code/db
+      volumes:
+        - name: db
+          persistentVolumeClaim:
+            claimName: ciso-assistant

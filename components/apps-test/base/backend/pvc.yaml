@@ -1,0 +1,16 @@
+---
+# PVC for CISO Assistant
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ciso-assistant
+  labels:
+    app.kubernetes.io/name: ciso-assistant
+    app.kubernetes.io/component: storage
+    app.kubernetes.io/instance: test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

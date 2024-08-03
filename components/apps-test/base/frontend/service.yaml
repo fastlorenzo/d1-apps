@@ -1,0 +1,16 @@
+---
+# And now the service for the frontend
+apiVersion: v1
+kind: Service
+metadata:
+  name: ciso-assistant-frontend
+spec:
+  selector:
+    app.kubernetes.io/name: ciso-assistant
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/instance: test
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP
