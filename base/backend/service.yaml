@@ -7,7 +7,7 @@ spec:
   selector:
     app.kubernetes.io/name: ciso-assistant
     app.kubernetes.io/component: backend
-    app.kubernetes.io/instance: test
+    app.kubernetes.io/instance: ${APP_INSTANCE_NAME}
   ports:
     - protocol: TCP
       port: 8000

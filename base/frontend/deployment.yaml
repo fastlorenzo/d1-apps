@@ -1,6 +1,6 @@
 ---
-# Backend for the CISO Assistant application
-# Using deployment for the backend to match the following docker-compose
+# Fronted for the CISO Assistant application
+# Using deployment for the frontend to match the following docker-compose
 # version: "3.9"
 # services:
 #   backend:
@@ -40,39 +40,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ciso-assistant-backend
+  name: ciso-assistant-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: ciso-assistant
-      app.kubernetes.io/component: backend
-      app.kubernetes.io/instance: test
+      app.kubernetes.io/component: frontend
+      app.kubernetes.io/instance: ${APP_INSTANCE_NAME}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: ciso-assistant
-        app.kubernetes.io/component: backend
-        app.kubernetes.io/instance: test
+        app.kubernetes.io/component: frontend
+        app.kubernetes.io/instance: ${APP_INSTANCE_NAME}
     spec:
       containers:
-        - name: backend
-          image: ghcr.io/intuitem/ciso-assistant-community/backend:v1.6.3 # {"$imagepolicy": "apps-update:ciso-assistant-backend:image"}
+        - name: frontend
+          image: ghcr.io/intuitem/ciso-assistant-community/frontend:v1.6.3 # {"$imagepolicy": "apps-update:ciso-assistant-frontend:image"}
           env:
-            - name: ALLOWED_HOSTS
-              value: ciso-assistant-backend
-            - name: CISO_ASSISTANT_URL
-              value: https://${APP_INSTANCE_NAME}.ca.${CLUSTER_DOMAIN}
-            - name: DJANGO_DEBUG
-              value: "True"
-          # get multiple env variables from a secret
-          envFrom:
-            - secretRef:
-                name: ciso-assistant-secret
-          volumeMounts:
-            - name: db
-              mountPath: /code/db
-      volumes:
-        - name: db
-          persistentVolumeClaim:
-            claimName: ciso-assistant
+            - name: PUBLIC_BACKEND_API_URL
+              value: http://ciso-assistant-backend:8000/api
+            - name: PROTOCOL_HEADER
+              value: x-forwarded-proto
+            - name: HOST_HEADER
+              value: x-forwarded-host
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            # limits:
+            #   memory: "128Mi"
+            #   cpu: "500m"

@@ -6,6 +6,3 @@ namespace: apps-update
 resources:
   - ./ciso-assistant-backend.yaml
   - ./ciso-assistant-frontend.yaml
-  - frontend-podinfo.yaml
-  - backend-memcached.yaml
-  - backend-redis.yaml
